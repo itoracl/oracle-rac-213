@@ -1,0 +1,49 @@
+################################################################################
+#                                                                              #
+#    Author: Serguei Nastassi          itoracle@icloud.com                     #
+#    Created 01/03/2023                                                        #            
+################################################################################
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oracle-rdbms-config
+  labels:
+    app: oracle-rac-213
+data:
+#  IGNORE_CVU_CHECKS: "true"
+#
+  CLUSTER_NAME: "ora-213"
+#  CONTAINER_DB_FLAG: "TRUE"
+#  DHCP_CONF: "TRUE"
+  NODE_VIP: "172.16.1.160"
+  VIP_HOSTNAME: "oracle-rac-213-0-v"
+  PUBLIC_IP: "172.16.1.150"
+  PUBLIC_HOSTNAME: "oracle-rac-213-0"
+  SCAN_NAME: "ora-scan"
+#  SCAN_IP: "172.16.1.70"
+  PRIV_IP: "192.168.17.150"
+  PRIV_HOSTNAME: "oracle-rac-213-0-p"
+#
+#  CMAN_IP: "172.16.1.15"
+#  CMAN_HOSTNAME: "cman-1"
+  #
+  COMMON_OS_PWD_FILE: "common_os_pwdfile.enc"
+  PWD_KEY: "pwd.key"
+  #
+  DOMAIN: "oracle-rac-213.svc.cluster.local"
+#  DNS_SEARCH: "10.96.0.10"
+#  DNS_SERVERS: "192.168.1.1"  #"10.96.0.10"
+#  DEFAULT_GATEWAY: "172.16.1.1"       # within container
+  ASM_DEVICE_LIST: "/dev/asm_disk01,/dev/asm_disk02,/dev/asm_disk03,/dev/asm_disk04,/dev/asm_disk05"
+#  ASM_DEVICE_LIST: /oradata/asm_disk01.img,/oradata/asm_disk02.img,/oradata/asm_disk03.img
+  ASM_DISCOVERY_DIR: "/dev"
+#  ASM_DISCOVERY_DIR: "/oradata"
+#  CRS_NODES: "oracle-rac-213-0"
+#  GRID_RESPONSE_FILE: "grid_sample.rsp"
+#  DBCA_RESPONSE_FILE: "dbca_sample.rsp"
+  OP_TYPE: "INSTALL"
+#  ORACLE_CHARACTERSET: "AL32UTF8"
+#  ORACLE_EDITION: "enterprise"
+#  ORACLE_SID: "ORCLCDB"
+#  ORACLE_PDB: "ORCLPDB1"

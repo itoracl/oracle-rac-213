@@ -1,0 +1,116 @@
+################################################################################
+#                                                                              #
+#    Author: Serguei Nastassi          itoracle@icloud.com                     #
+#    Created 01/03/2023                                                        #            
+################################################################################
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nas-0
+spec:
+  volumeMode: Block
+  capacity:
+    storage: 23Gi
+  local:
+    path: /dev/loop0
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - r02
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nas-1
+spec:
+  volumeMode: Block
+  capacity:
+    storage: 23Gi
+  local:
+    path: /dev/loop1
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - r02
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nas-2
+spec:
+  volumeMode: Block
+  capacity:
+    storage: 23Gi
+  local:
+    path: /dev/loop2
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - r02
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nas-3
+spec:
+  volumeMode: Block
+  capacity:
+    storage: 23Gi
+  local:
+    path: /dev/loop3
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - r02
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nas-4
+spec:
+  volumeMode: Block
+  capacity:
+    storage: 23Gi
+  local:
+    path: /dev/loop4
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - r02
+            

@@ -1,0 +1,20 @@
+################################################################################
+#                                                                              #
+#    Author: Serguei Nastassi          itoracle@icloud.com                     #
+#    Created 01/03/2023                                                        #            
+################################################################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rdbms
+  labels:
+    app: rdbms
+spec:
+ ports:
+ - protocol: TCP
+   port: 5500
+   targetPort: oem-express
+ selector:
+   app: oracle-rac-213
+ type: NodePort

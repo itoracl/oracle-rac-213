@@ -1,0 +1,26 @@
+################################################################################
+#                                                                              #
+#    Author: Serguei Nastassi          itoracle@icloud.com                     #
+#    Created 01/03/2023                                                        #            
+################################################################################
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: macvlan-priv-conf
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "capabilities": { "ips": true },
+          "master": "enp2s0f1",
+          "mtu": 1500,
+          "mode": "bridge",
+          "ipam": {
+            "type": "static"
+          }
+        }
+      ]
+    }'

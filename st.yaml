@@ -1,0 +1,180 @@
+################################################################################
+#                                                                              #
+#    Author: Serguei Nastassi          itoracle@icloud.com                     #
+#    Created 01/03/2023                                                        #            
+################################################################################
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: oracle-rac-213
+spec:
+  serviceName: rdbms
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oracle-rac-213
+  template:
+    metadata:
+      labels:
+        app: oracle-rac-213
+      annotations:  
+        k8s.v1.cni.cncf.io/networks: '[ 
+            {
+              "name": "macvlan-conf",
+              "ips": ["172.16.1.150/24"]
+            },
+            {
+              "name": "macvlan-priv-conf",
+              "ips": ["192.168.17.150/24"]
+            }
+          ]'
+    spec:
+      terminationGracePeriodSeconds: 3
+      securityContext:
+        sysctls:
+              - name: kernel.shmall
+                value: "2097152"
+              - name: kernel.sem
+                value: "250 32000 100 128"
+              - name: kernel.shmmax
+                value: "8589934592"
+              - name: kernel.shmmni
+                value: "4096"
+      containers:
+        - name: rdbms
+          image: cr.local:32424/container-registry.oracle.com/database/rac:21.3.0.0
+          resources:
+            requests:
+              memory: "16Gi"
+            limits:
+              memory: "16Gi"
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_NICE","SYS_RESOURCE","NET_ADMIN","AUDIT_CONTROL","AUDIT_WRITE","SYSLOG","SYS_TIME","SYS_RESOURCE","SYS_RAWIO","SYS_MODULE","SYS_CHROOT","SYS_BOOT","SYS_ADMIN","SETUID","SETGID","NET_BIND_SERVICE","CHOWN"]
+            runAsUser: 0
+            procMount: "Unmasked"
+            allowPrivilegeEscalation: true
+          envFrom:
+            - configMapRef:
+                name: oracle-rdbms-config
+          ports:
+            - containerPort: 1521
+              name: oracle-listener
+            - containerPort: 5500
+              name: oem-express
+          volumeDevices:
+            - name: ora-blk0
+              devicePath: /dev/asm_disk01
+            - name: ora-blk1
+              devicePath: /dev/asm_disk02
+            - name: ora-blk2
+              devicePath: /dev/asm_disk03
+            - name: ora-blk3
+              devicePath: /dev/asm_disk04
+            - name: ora-blk4
+              devicePath: /dev/asm_disk05
+          volumeMounts:
+          - name: oradata
+            mountPath: /oradata
+          - name: tmpfs
+            mountPath: /dev/shm
+          - name: hp
+            mountPath: /dev/hugepages
+          - name: cgroups
+            mountPath: /sys/fs/cgroup
+#            readOnly: true
+          - name: proc
+            mountPath: /hostproc
+          - name: boot
+            mountPath: /boot
+            readOnly: true
+      volumes:
+        - name: oradata
+          nfs:
+            server: "192.168.1.4"
+            path: /home/oracle-rac-213
+        - name: ora-blk0
+          persistentVolumeClaim:
+            claimName: nas-0-oracle-rac-213-0
+        - name: ora-blk1
+          persistentVolumeClaim:
+            claimName: nas-1-oracle-rac-213-0
+        - name: ora-blk2
+          persistentVolumeClaim:
+            claimName: nas-2-oracle-rac-213-0
+        - name: ora-blk3
+          persistentVolumeClaim:
+            claimName: nas-3-oracle-rac-213-0
+        - name: ora-blk4
+          persistentVolumeClaim:
+            claimName: nas-4-oracle-rac-213-0
+        - name: tmpfs
+          emptyDir:
+            medium: Memory
+            sizeLimit: 4Gi
+        - name: hp
+          hostPath:
+            path: /dev/hugepages
+        - name: cgroups
+          hostPath:
+            path: /sys/fs/cgroup
+            type: Directory
+        - name: proc
+          hostPath:
+            path: /home/hostproc
+            type: Directory
+        - name: boot
+          hostPath:
+            path: /boot
+            type: Directory
+  volumeClaimTemplates:
+  - metadata:
+      name: nas-0
+    spec:
+      accessModes:
+        - ReadWriteMany
+      volumeMode: Block
+      resources:
+        requests:
+          storage: 23Gi
+  - metadata:
+      name: nas-1
+    spec:
+      accessModes:
+        - ReadWriteMany
+      volumeMode: Block
+      resources:
+        requests:
+          storage: 23Gi
+  - metadata:
+      name: nas-2
+    spec:
+      accessModes:
+        - ReadWriteMany
+      volumeMode: Block
+      resources:
+        requests:
+          storage: 23Gi
+  - metadata:
+      name: nas-3
+    spec:
+      accessModes:
+        - ReadWriteMany
+      volumeMode: Block
+      resources:
+        requests:
+          storage: 23Gi
+  - metadata:
+      name: nas-4
+    spec:
+      accessModes:
+        - ReadWriteMany
+      volumeMode: Block
+      resources:
+        requests:
+          storage: 23Gi
