@@ -137,12 +137,12 @@ Your system will require additional configuration for accessing the database fro
 
 Let's execute inside the container:
 [grid@oracle-rac-213-0 ~] $ crsctl check crs
-
+```
 CRS-4638: Oracle High Availability Services is online
 CRS-4537: Cluster Ready Services is online
 CRS-4529: Cluster Synchronization Services is online
 CRS-4533: Event Manager is online
-
+```
 [grid@oracle-rac-213-0 ~] $ crsctl status resource -w "TYPE co ’ora’" -t
 ```
 --------------------------------------------------------------------------------
