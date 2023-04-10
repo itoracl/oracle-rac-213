@@ -17,12 +17,13 @@ libseccomp: 2.5.1
 OEL 8.5 is already certified for Oracle RAC, 7.9 does not need to be installed.
 The main tasks of setting up a RAC rollout:
 
-Creating and configuring subnets in a kubernetes cluster
-Settings:
-kubernetes worker node kernel
-RAC container kernel, namespaced and read only.
-Selecting and configuring the RAM used by RAC
-Setting up shared RAC storage in kubernetes.
+ 1. Creating and configuring subnets in a kubernetes cluster
+ 2. Settings:
+    - kubernetes worker node kernel
+    - RAC container kernel, namespaced and read only.
+ 3. Selecting and configuring the RAM used by RAC
+ 4. Setting up shared RAC storage in kubernetes.
+
 This rollout is not the only possible configuration, it is the simplest example of a working solution. Deployment of development and test environments can be achieved in a relatively simple way. For production setup, you should use other approaches in configuring and reserving shared partitions.
 
 Due to the deprecation of podSecurityPolicy from version 1.23, some of the settings are done in the namespace.
