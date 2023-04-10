@@ -27,7 +27,7 @@ This rollout is not the only possible configuration, it is the simplest example 
 
 Due to the deprecation of podSecurityPolicy from version 1.23, some of the settings are done in the namespace.
 
-#Create networks and adapters
+# Create networks and adapters
 Public and private RAC networks, historically required from 2 adapters, virtual ones are also suitable, will not work with fewer adapters.
 In my opinion, any CNI can be configured to add additional adapters to a container at startup.
 To reduce implementation time, I use cncf approved multus solution. When deploying multus CNI in a kubernetes cluster, I advise you to pay attention to the possibility of deploying only on nodes where RAC containers will run. Even in the absence of annotations in manifests, no containers may start due to incorrect settings after rolling out multus CNI. Immediately pay attention to the file /etc/cni/net.d/00-multus.conf
@@ -35,7 +35,7 @@ To reduce implementation time, I use cncf approved multus solution. When deployi
  { "cniVersion": "0.3.1", "name": "multus-cni-network", "type": "multus", "capabilities": {"portMappings": true}, "kubeconfig": "/etc/cni/net.d/multus.d/multus.kubeconfig", "delegates": [ { "cniVersion": "0.3.1", "name" ……
 This may work in future versions of containerd, but today every time a kubernetes node is started, this file is updated and cniVersion must be 0.3.1 to work correctly.
 
-#Add network definitions:
+# Add network definitions:
 
 I specifically wrote the mtu 1500 for a private network knowing jumbo packets are required with the mtu 9000 and we would get a warning when deploying the grid in the logs. There is nothing wrong with this, it's just that this setup will require a lot of work that is not included in the current plans. It may well turn out that 20% speedup when using jumbo packets will not affect the overall performance.
 spec. securityContext:sysctls: this is where you can declare some of the kernel parameters for use in the container, the rest can be set at the level of the kubernetes worker node.
@@ -68,7 +68,7 @@ securityContext:
 privileged: true
 There is no mistake here, it is at the container level that the second securityContext block is declared. When compared with the official Oracle docker configuration, a significant difference in the operation of docker and kubernetes.
 
-#Configuring RAM settings
+# Configuring RAM settings
 
 The total amount of RAM on the described stand is not very large - 20Gb, the recommended minimum amount of 16Gb for a pod seems normal. Also, kube-proxy, flannel, multus are required to work on the node, container registry is not required to work on the node, saves time only.
 It is very important to decide on what equipment you can and should use huge pages. In my personal opinion, based on Oracle recommendations, the officially defined value vm.nr_hugepages=16384 should not be used on servers with less than 64Gb of physical RAM. You can try, most likely the Oracle database will not start. Just don't use it:
@@ -78,7 +78,7 @@ Don't forget to disable transparent huge pages in all cases:
 sudo echo never > /sys/kernel/mm/transparent_hugepage/enabled
 It is better to do this at the GRUB level in advance.
 
-#Preparing to run install grid infrastructure
+# Preparing to run install grid infrastructure
 
 In common_scripts create sh file.
 Rename ntp.conf file to avoid cvu error. It is not clear why he appeared in this image.
@@ -95,7 +95,7 @@ This file should be executed in the first 60 seconds of the container's operatio
 
 kubectl -n oracle-rac-213 exec -it oracle-rac-213-0 -- bash /oradata/scripts/ini.sh
 
-#Shared Storage
+# Shared Storage
 
 Deploy 1 or more nfs servers to share a catalog with storage files. If you have specialized NAS equipment, you can miss a lot here.
 Prepare 2 or more files on nfs servers according to Oracle documentation.
@@ -119,11 +119,11 @@ Now we can declare all persistent volumes.
 Everything must be applied.
 Persistent volume claims are declared in the statefulset manifest.
 
-#Settings
+# Settings
 
 I do not explicitly specify the DNS server, Oracle's normal mode of operation, it will focus on resolv.conf, then cluster dns. The main thing in this chain is to indicate the correspondence of host names from this list and their addresses, for SCAN, specify all 3 addresses 172.16.1.70 - 172.16.1.72. I used a dns server from a network domain external to the kubernetes cluster, so I had to specify everything 2 times with and without a domain. The domain name in the container is formed according to the rules of kubernetes: oracle-rac-213.svc.cluster.local
 
-Enabling swap
+# Enabling swap
 
 sudo fallocate -l 32G /swap.img
 sudo chmod 600 /swap.img
