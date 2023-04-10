@@ -124,13 +124,13 @@ Persistent volume claims are declared in the statefulset manifest.
 I do not explicitly specify the DNS server, Oracle's normal mode of operation, it will focus on resolv.conf, then cluster dns. The main thing in this chain is to indicate the correspondence of host names from this list and their addresses, for SCAN, specify all 3 addresses 172.16.1.70 - 172.16.1.72. I used a dns server from a network domain external to the kubernetes cluster, so I had to specify everything 2 times with and without a domain. The domain name in the container is formed according to the rules of kubernetes: oracle-rac-213.svc.cluster.local
 
 # Enabling swap
-
+```
 sudo fallocate -l 32G /swap.img
 sudo chmod 600 /swap.img
 sudo mkswap /swap.img
 sudo swapon /swap.img
-
-Launch and monitoring
+```
+# Launch and monitoring
 Apply all manifests from namespace creation to statefulset.
 
 Your system will require additional configuration for accessing the database from outside the cluster. CMAN is an option and can and should be configured additionally.
