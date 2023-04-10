@@ -144,7 +144,7 @@ CRS-4529: Cluster Synchronization Services is online
 CRS-4533: Event Manager is online
 
 [grid@oracle-rac-213-0 ~] $ crsctl status resource -w "TYPE co ’ora’" -t
-
+```
 --------------------------------------------------------------------------------
 Name           Target  State        Server                   State details
 --------------------------------------------------------------------------------
@@ -200,3 +200,4 @@ ora.scan2.vip
 ora.scan3.vip
       1        ONLINE  ONLINE       oracle-rac-213-0         STABLE
 --------------------------------------------------------------------------------
+```
