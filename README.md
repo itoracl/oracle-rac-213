@@ -3,10 +3,9 @@ Oracle RAC in Kubernetes Cluster Deployment
 
 This article covers the necessary and sufficient steps to run and configure RAC 21.3 on a kubernetes 1.26 cluster. There were no precedents for April 2023 work outside of Oracle Cloud, so thousands of experiments had to be carried out, many hypotheses were discarded and accepted.
 Today, the world's first rollout of RAC in kubernetes and without docker.
-
+```
 uname -a
 Linux r02 5.4.17-2136.300.7.el8uek.x86_64 #2 SMP Fri Oct 8 16:23:01 PDT 2021 x86_64 x86_64 x86_64 GNU/Linux
-OEL 8.5 is already certified for Oracle RAC, 7.9 does not need to be installed.
 containerd --version
 containerd github.com/containerd/containerd v1.6.4 212e8b6fa2f44b9c21b2798135fc6fb7c53efc16
 runc --version
@@ -14,7 +13,8 @@ runc version 1.0.2
 spec: 1.0.2-dev
 go: go1.16.7
 libseccomp: 2.5.1
-
+```
+OEL 8.5 is already certified for Oracle RAC, 7.9 does not need to be installed.
 The main tasks of setting up a RAC rollout:
 
 Creating and configuring subnets in a kubernetes cluster
