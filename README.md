@@ -133,9 +133,10 @@ sudo swapon /swap.img
 ```
 # Launch and monitoring
 Apply all manifests from namespace creation to statefulset.
-
+I am sync through argocd:
+![image](https://user-images.githubusercontent.com/115593821/230423993-4b71b72f-273a-4fda-b110-0b23fe813f39.png)
 Your system will require additional configuration for accessing the database from outside the cluster. CMAN is an option and can and should be configured additionally.
-
+![image](https://user-images.githubusercontent.com/115593821/230425033-a9b74160-d40a-4d67-a0e0-7ba8d5f02d87.png)
 Let's execute inside the container:
 [grid@oracle-rac-213-0 ~] $ crsctl check crs
 ```
